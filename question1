@@ -1,0 +1,39 @@
+import java.io.*;
+class Main
+  	{
+	public static void main(String args[]) throws IOException
+		{
+		question1 lex = new question1(System.in);
+		Token token = lex.yylex();
+		while(token.text != null)
+			{
+			token = lex.yylex();
+			}
+		}
+	}
+class Token
+	{
+	String text;
+	Token (String t) {text = t;}
+	}
+%%
+%public
+%class question1
+%type void
+%eofval{
+	return new Token(null);
+%eofval}
+%type Token
+
+digit = [0-9]
+letter =[a-zA-Z]
+special = [!@#$%^&*()_+]
+whitespace = [\t\n]
+
+
+%%
+{digit}+    	            	    {System.out.println("Integer-"+yytext());}
+\"({letter}|{digit}|{special})*\"   {System.out.println("String-"+yytext());}
+{digit}+\.{digit}+		    {System.out.println("Float-"+yytext());}
+[\n] 	    	 		    {System.out.println("NL"+yytext());}
+

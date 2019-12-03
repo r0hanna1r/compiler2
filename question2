@@ -1,0 +1,54 @@
+import java.io.*;
+class Main
+  	{
+	public static void main(String args[]) throws IOException
+		{
+		question2 lex = new question2(System.in);
+		Token token = lex.yylex();
+		while(token.text != null)
+			{
+			token = lex.yylex();
+			}
+		}
+	}
+class Token
+	{
+	String text;
+	Token (String t) {text = t;}
+	}
+%%
+%public
+%class question2
+%type void
+%eofval{
+	return new Token(null);
+%eofval}
+%type Token
+
+digit = [0-9]
+letter =[a-zA-Z]
+special = [!@#$%^&*()_+]
+whitespace = [\t\n]
+
+
+%%
+main|var 			    {System.out.println("Keyword - "+yytext());}
+\+|-|\*|/			    {System.out.println("Arithmetic operators - "+yytext());}
+&&|\|\||!=|==			    {System.out.println("Logical Operators - "+yytext());}			
+\{				    {System.out.println("Left curly brace - "+yytext());}
+\}				    {System.out.println("Right curly brace - "+yytext());}
+\(				    {System.out.println("Left paranthesis - "+yytext());}
+\)				    {System.out.println("Right paranthesis - "+yytext());}
+\=				    {System.out.println("Assignment operator - "+yytext());}
+[\n] 	    	 		    {System.out.println("NL"+yytext());}
+integer|char|string|float	    {System.out.println("Datatype - "+yytext());}
+input 	    	 		    {System.out.println("Input function - "+yytext());}
+output 	    	 		    {System.out.println("Output function - "+yytext());}
+if 	    	 		    {System.out.println("if");}
+then 	    	 		    {System.out.println("then");}
+else 	    	 		    {System.out.println("else");}
+for 	    	 		    {System.out.println("for");}
+while 	    	 		    {System.out.println("while");}
+\"({letter}|{digit}|{special})*\"   {System.out.println("String - "+yytext());}
+{letter}+|({digit}|{letter})*	    {System.out.println("Identifier - "+yytext());}
+
